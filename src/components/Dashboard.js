@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../firebase/firebaseConfig';
+import { database } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 const Dashboard = () => {
@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const querySnapshot = await getDocs(collection(db, "your-collection-name"));
+            const querySnapshot = await getDocs(collection(database, "books"));
             const itemList = [];
             querySnapshot.forEach((doc) => {
                 itemList.push({ id: doc.id, ...doc.data() });

@@ -46,7 +46,7 @@ const Login = () => {
                 <input type='password' placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
                 required />
-                <button type="submit">Signin</button>
+                <button type="submit">Login</button>
             </form>
             <button onClick={handleForgotPassword}>Forgot Password?</button>
             {error && <p className='error'>{error}</p>}
