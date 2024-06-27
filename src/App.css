@@ -1,38 +1,29 @@
-.App {
-  text-align: center;
-}
-.form{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* height: 100vh; */
-}
-.login, .home{
-  text-align: center;
-}
-input{
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid gray;
-  margin-right: 5px;
-  margin-bottom: 10px;
-}
-  
-button{
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid gray;
-  margin-right: 5px;
-  margin-top: 10px;
-  background-color: rgb(158, 158, 219);
+body {
+  font-family: Arial, sans-serif;
 }
 
-button:hover{
-  background-color: gray;
+h1 {
+  color: #333;
 }
-p.error{
-  color: red;
-  text-align: center;
-  font-weight: bold;
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f4f4f4;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+  h1 {
+      font-size: 18px;
+  }
+
+  li {
+      padding: 8px;
+  }
 }
