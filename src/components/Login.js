@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../firebase';
-import '../App.css';
+import './LoginRegister.css';
+
+const googleProvider = new GoogleAuthProvider();
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -14,45 +16,64 @@ const Login = () => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log(userCredential);
-            navigate("/", {state: {email: userCredential.user.email}});
+            navigate("/", { state: { email: userCredential.user.email } });
         } catch (error) {
             setError(error.message);
-            console.log(error.message);
         }
     };
 
     const handleForgotPassword = async () => {
         if (!email) {
-            setError("Please enter your email address to send a reset link.");
+            setError("Please enter your email address.");
             return;
         }
         try {
             await sendPasswordResetEmail(auth, email);
-            alert("A password reset link has been sent to your email. Please check your inbox and follow the instructions to reset your password.");
+            setError("Password reset email sent!");
         } catch (error) {
             setError(error.message);
-            console.log(error.message);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            navigate("/", { state: { email: result.user.email } });
+        } catch (error) {
+            setError(error.message);
         }
     };
 
     return (
-        <div className='login'>
-            <h1>Signin</h1>
-            <form className='form' onSubmit={handleSignin}>
-                <input type="email" placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                required />
-                <input type='password' placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required />
+        <div className="container">
+            <h2>Login</h2>
+            <form className="form" onSubmit={handleSignin}>
+                <input
+                    type="email"
+                    placeholder="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
                 <button type="submit">Login</button>
             </form>
             <button onClick={handleForgotPassword}>Forgot Password?</button>
-            {error && <p className='error'>{error}</p>}
-            <button onClick={() => navigate("/register")}>You don't have an account? Register</button>
+            <div className="links">
+                Don't have an account? Please <a href="#" onClick={() => navigate("/register")}>Register</a> here.
+            </div>
+            <button className="google-btn" onClick={handleGoogleSignIn}>
+                <img src="https://t4.ftcdn.net/jpg/03/08/54/37/360_F_308543787_DmPo1IELtKY9hG8E8GlW8KHEsRC7JiDN.jpg" alt="Google logo" /> Login with Google
+            </button>
+            {error && <div className="error">{error}</div>}
         </div>
-    )
-}
+    );
+};
 
 export default Login;
